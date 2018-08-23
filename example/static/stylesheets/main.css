@@ -1,0 +1,87 @@
+body {
+    background: #ffa;
+    font-size: 16pt;
+    margin: 80px;
+}
+
+a {
+    color: #d10;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.host {
+}
+
+textarea {
+    font: 18pt Georgia;
+    padding: 10px;
+    min-width: 512px;
+    max-width: 512px;
+}
+
+input {
+    padding: 10px;
+    font: 12pt Georgia;
+}
+
+.title {
+    font: 32pt Georgia;
+    font-weight: bold;
+    padding-bottom: 32px;
+}
+
+.body {
+    font-size: 18pt;
+    white-space: pre-wrap;
+}
+
+.placeholder {
+    font-style: italic;
+}
+
+.message {
+    color: #555;
+    font-size: 12pt;
+    padding-bottom: 12pt;
+    font-style: italic;
+}
+
+.subtitle {
+    color: #866;
+    font-weight: normal;
+    font-size: 16pt;
+    font-style: italic;
+}
+
+.subtitle a {
+    color: #622;
+}
+
+.subtle {
+    color: #888;
+}
+
+.edit_link {
+}
+.edit_link a {
+    color: #d88;
+    font: 12pt Georgia;
+}
+.save_link a {
+    color: #f00;
+    font: 12pt Georgia;
+}
+
+li {
+    padding: 4px;
+}
+
+.loading {
+    font-size: 20pt;
+    justify-content: center;
+}
+

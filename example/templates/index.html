@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/stylesheets/main.css" />
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Min CRUD Example</h1>
+        <p>Welcome {{.UserInfo.Username}}</p>
+
+        <ul>
+            {{if .UserInfo.IsSignedIn}}
+            <li>
+                <a href="/auth/signout">Sign out</a>
+            </li>
+            {{else}}
+            <li>
+                <a href="/auth/signin">Sign in</a>
+            </li>
+            {{end}}
+        </ul>
+
+        <h2>Stories</h2>
+        <ul>
+            {{ range .Entities }}
+                <li>
+                    <a href="/read/{{ .EntityId }}">{{ .Title }}</a>
+                </li>
+            {{ end }}
+        </ul>
+
+        <ul>
+            <li>
+                <a href="/edit">Write new post</a>
+            </li>
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Read Post</title>
+        <link rel="stylesheet" href="/stylesheets/main.css" />
+        <script src="/scripts/main.js"></script>
+        <script type="text/javascript">
+        function initialize() {
+            initializePage(appContext)
+        }
+        </script>
+    </head>
+
+    <body onload="initialize()">
+        <div id="host" class="host">
+        </div>
+    </body>
+
+    <script type="text/javascript">
+        var isNewEntity = {{.EditMode}} && "{{.EntityId}}" == ""
+
+        const props = {
+            userInfo: { userId: "{{ .UserInfo.UserId }}", username: "{{ .UserInfo.Username }}" }, 
+            redirectOnSave: isNewEntity,
+            initialEntityId: "{{.EntityId}}",
+            initialMode: {{.EditMode}} ? "editing" : "reading"
+        }
+        const state = {
+            mode: "loading",  // loading / error / reading / editing
+            entityInfo: {
+                entityId: "{{.EntityId}}",
+                contributor: { userId: "", username: "" },
+                entity: {}
+            },
+            message: "",
+            history: [],    // entity ids of everything in the chain
+            readIndex: -1,    // position in history that we're reading
+            selectedOption: -1
+        }
+        var appContext = {
+            props: props,
+            state: state,
+        }
+
+        const errorLoadingEntity = "Entity not found"
+        const errorLoadingUser = "User not found"
+
+        function render(appContext) {
+            var host = document.getElementById("host")
+            var html = ""
+            var message = '<div class="message">' + ( appContext.state.message ? appContext.state.message : "&nbsp;" ) + '</div>' 
+
+            if (appContext.state.mode == "loading") {
+                html = "<div class='loading'>L o a d i n g . . .</div>"
+            } else if (appContext.state.mode == "error") {
+                html = `<h1>That entity could not be loaded</h1> <p> I could not load that entity. I am so sorry.  </p>${message} <p> <a href="/">Try reading some other posts instead.</a> </p> `
+            } else if (appContext.state.mode == "reading") {
+                var bodyText = ""
+                var editLink = ""
+                
+                if (appContext.state.entityInfo.entity.Body) {
+                    const safeBody = escapeHtml(appContext.state.entityInfo.entity.Body)
+                    bodyText = `<div class='body'>${safeBody}</div>`
+                    if (canEditEntity(appContext.state.entityInfo.entity, appContext.props.userInfo)) {
+                        editLink = ` | <a href="javascript:editEntity();">Edit</a>`
+                    }
+                } else {
+                    bodyText = '<div class="body"><p><em>No one has written this entity yet. Click Edit to contribute.</em></p><p><a href="javascript:editEntity();">Edit</a></p></div>'
+                }
+
+                var subtitleText = ""
+                const userId = appContext.state.entityInfo.contributor.userId
+                const username = appContext.state.entityInfo.contributor.username
+                const created_ago = FriendlyTimeAgo(appContext.state.entityInfo.entity.LastModified)
+                const subtitle = `<div class="subtitle">by <a href="/user/${userId}">${username}</a>, ${created_ago}</div>`
+                const safeTitle = escapeHtml(appContext.state.entityInfo.entity.Title)
+                subtitleText = `<div class="title">${safeTitle}${subtitle}</div>`
+
+                html = `
+                        <div class="edit_link"><a href="/">Back</a>
+                        ${editLink}
+                        </div>
+                        ${message}
+                        ${subtitleText}
+                        ${bodyText}
+                `
+
+            } else {
+                console.log("Editing...")
+                html = `
+                        ${message}
+                        <p>Title:</p>
+                        <input id="Title" placeholder="Your title here" value="${appContext.state.entityInfo.entity.Title}" />
+                        <p>Body:</p>
+                        <textarea id="Body" rows="10" cols="40" placeholder="Your entity here...">${appContext.state.entityInfo.entity.Body}</textarea>
+                    <div style="font-size: 14pt;">
+                            <div class="save_link"><a href="javascript:cancelEdits();">Cancel</a> &nbsp; <a href="javascript:saveEdits();">Save</a> </div>
+                        </div>
+                `
+            }
+            host.innerHTML = html
+        }
+    </script>
+</html>
+
