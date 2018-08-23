@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h1>Min CRUD Example</h1>
+        <p>Welcome {{.Username}}</p>
+        <ul>
+            {{if .IsSignedIn}}
+            <li>
+                <a href="/auth/signout">Sign out</a>
+            </li>
+            {{else}}
+            <li>
+                <a href="/auth/signin">Sign in</a>
+            </li>
+            {{end}}
+        </ul>
+    </body>
+</html>

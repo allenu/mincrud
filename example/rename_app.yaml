@@ -1,0 +1,24 @@
+# Rename this file to app.yaml and set the env_variables below
+
+runtime: go
+api_version: go1
+
+handlers:
+- url: /stylesheets
+  static_dir: static/stylesheets
+
+- url: /scripts
+  static_dir: static/scripts
+
+- url: /about
+  static_dir: static/about
+
+- url: /.*
+  script: _go_app
+
+# Change these
+env_variables:
+  sessions_secret: 'change this'
+  twitter_consumer_key: 'get this from twitter'
+  twitter_consumer_secret: 'get this from twitter'
+
